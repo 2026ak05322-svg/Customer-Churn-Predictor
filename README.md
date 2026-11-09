@@ -25,7 +25,7 @@ Retaining active subscribers is a major operational challenge for modern digital
 14. **Family_Plan_Members**: Number of household members linked to the contract.
 
 ## c. GitHub Repository Link
-- **GitHub Repository**: [https://github.com/<your-username>/customer-churn-classifier](https://github.com/<your-username>/customer-churn-classifier)
+- **GitHub Repository**: https://github.com/2026ak05322-svg/Customer-Churn-Predictor.git
 - **Live Streamlit App**: [https://customer-churn-classifier.streamlit.app](https://customer-churn-classifier.streamlit.app)
 
 ## d. Models Used & Performance Evaluation Table
