@@ -40,3 +40,10 @@ Retaining active subscribers is a major operational challenge for modern digital
 
 ### Overall Winner for your dataset?
 **Decision Tree Classifier / SVM** are excellent real-world choices. SVM achieves a highly balanced evaluation profile with an accuracy of **93.75%** and an outstanding AUC Score of **0.9928**.
+
+### Observations on Model Performance
+- **Logistic Regression**: Linear separation achieves optimal metrics on the synthetic test boundary parameters.
+- **Decision Tree**: Captures multi-level decision pathways well with an Accuracy of 88.33%.
+- **KNN**: A strong baseline performer reaching an AUC of 90.23%.
+- **Naive Bayes**: Performs exceptionally with a 92.92% Accuracy and stable classification indicators.
+- **Support Vector Machine (SVM)**: A highly robust non-linear performer achieving 93.75% Accuracy and an outstanding AUC Score of 99.28%.
