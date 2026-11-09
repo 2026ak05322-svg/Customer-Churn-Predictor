@@ -81,6 +81,30 @@ if uploaded_file is not None and pipeline is not None:
             report_df = pd.DataFrame(report_dict).transpose()
             st.dataframe(report_df.style.format(precision=4))
 
+        # ---------- Comparison of all 5 models on the uploaded test data ----------
+        st.subheader("Comparison of All Models on Uploaded Test Data")
+        rows = []
+        for name, fname in model_options.items():
+            try:
+                mdl = joblib.load(os.path.join("model", fname))
+                p = mdl.predict(X_eval)
+                pr = mdl.predict_proba(X_eval)[:, 1] if hasattr(mdl, "predict_proba") else p
+                rows.append({"Model": name,
+                             "Accuracy": accuracy_score(y_eval, p),
+                             "AUC": roc_auc_score(y_eval, pr),
+                             "Precision": precision_score(y_eval, p, zero_division=0),
+                             "Recall": recall_score(y_eval, p, zero_division=0),
+                             "F1": f1_score(y_eval, p, zero_division=0),
+                             "MCC": matthews_corrcoef(y_eval, p)})
+            except Exception as e:
+                st.warning(f"Could not evaluate {name}: {e}")
+        if rows:
+            compare_df = pd.DataFrame(rows).set_index("Model").round(4)
+            st.dataframe(compare_df.style.format(precision=4).highlight_max(axis=0, color="#ffe0b2"))
+            st.bar_chart(compare_df[["Accuracy", "F1", "MCC"]])
+            best = compare_df["MCC"].idxmax()
+            st.success(f"Best model on this test data (by MCC): {best}")
+
         # Download metrics and predictions
         st.subheader("Download Results")
         metrics_df = pd.DataFrame([{
@@ -94,5 +118,8 @@ if uploaded_file is not None and pipeline is not None:
                             file_name=f"metrics_{file_tag}.csv", mime="text/csv")
         dl2.download_button("Download predictions (CSV)", results_df.to_csv(index=False),
                             file_name=f"predictions_{file_tag}.csv", mime="text/csv")
+        if rows:
+            st.download_button("Download all-model comparison (CSV)", compare_df.to_csv(),
+                               file_name="all_models_comparison.csv", mime="text/csv")
 else:
     st.info("Please upload 'test_data.csv' from the sidebar to begin evaluation.")
