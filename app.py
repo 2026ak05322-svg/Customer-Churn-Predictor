@@ -94,3 +94,18 @@ if uploaded_file is not None and pipeline is not None:
             st.dataframe(report_df.style.format(precision=4))
 else:
     st.info("Please upload 'test_data.csv' from the sidebar to begin evaluation.")
+    # Download metrics and predictions
+          metrics_df = pd.DataFrame([{
+              "Model": selected_model_name, "Accuracy": acc, "AUC": auc,
+              "Precision": prec, "Recall": rec, "F1": f1, "MCC": mcc}])
+          st.download_button("Download metrics (CSV)",
+                             metrics_df.to_csv(index=False),
+                             file_name=f"metrics_{selected_model_name}.csv",
+                             mime="text/csv")
+
+          results_df = df.copy()
+          results_df["Predicted"] = y_pred
+          st.download_button("Download predictions (CSV)",
+                             results_df.to_csv(index=False),
+                             file_name=f"predictions_{selected_model_name}.csv",
+                             mime="text/csv")
